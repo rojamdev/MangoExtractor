@@ -5,7 +5,7 @@ import mmap
 
 WIN = Tk()
 
-tree = etree.parse("example.xml")
+tree = etree.parse("some activities.xml")
 root = tree.getroot()
 
 class Activity:
