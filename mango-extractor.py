@@ -1,9 +1,4 @@
 import xml.etree.ElementTree as etree
-from tkinter import *
-from tkinter.font import Font
-import mmap
-
-WIN = Tk()
 
 tree = etree.parse("some activities.xml")
 root = tree.getroot()
@@ -26,32 +21,13 @@ class Activity:
                 if subelem.tag == key: #if the tag matches one of the tags in the self.tags list
                     self.contents[key] = subelem.text #then set it to the respective variable
 
-    def display(self, is_comment):
-        if is_comment:
-            font = Font(family="Calibri", size=11)
-        else:
-            font = Font(family="Calibri", size=12, weight="bold")
-        
-        self.email_label = Label(WIN, text=self.contents["author-email-address"], font=font)
-        self.body_label = Label(WIN, text=self.contents["body"], font=font)
-        self.date_label = Label(WIN, text=self.contents["created-on"], font=font)
-
-        labels = [self.email_label, self.body_label, self.date_label]
-
-        for label in labels:
-            label.pack()
-
 
 for item in root.findall("activity"): #for every item named activity
     message = Activity(item) #create a new message object from that activity
-    message.display(False) #display the message object using tkinter
-    print(message.contents["body"])
+    print("MESSAGE: " + message.contents["body"])
     
     for thing in item.findall("comments"):
 
         for i in thing.findall("comment"):
             comment = Activity(i)
-            comment.display(True)
-            print(comment.contents["body"])
-
-WIN.mainloop()
+            print("COMMENT: " + comment.contents["body"])

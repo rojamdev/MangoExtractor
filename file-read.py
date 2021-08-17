@@ -1,14 +1,14 @@
 import re
 
-with open("testing.xml", "r") as file:
-    data = file.read().replace('\n', '')
+with open("hub_network_data.xml", "r", encoding="utf8") as input_file:
+    data = input_file.read().replace('\n', '')
+    
 
-#print(data)
+activities = re.findall("<activity>[\s\S]*?<\/activity>", data)
 
-#start = re.escape("<activity>")
-#end = re.escape("</activity>")
-#activity = re.search('%s(.*)%s' % (start, end), data).group(0)
+with open("output", "a+", encoding="utf8") as output_file:
 
-activity = re.search("<activity>[\s\S]*?<\/activity>", data).group(0)
+    for i in range(0, len(activities) - 1):
 
-print(activity)
+        output_file.write(activities[i])
+        output_file.write("\n")
