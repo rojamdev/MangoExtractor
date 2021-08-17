@@ -5,9 +5,10 @@ with open("testing.xml", "r") as file:
 
 #print(data)
 
-start = re.escape("<activity>")
-end = re.escape("</activity>")
+#start = re.escape("<activity>")
+#end = re.escape("</activity>")
+#activity = re.search('%s(.*)%s' % (start, end), data).group(0)
 
-activity = re.search('%s(.*)%s' % (start, end), data).group(0)
+activity = re.search("<activity>[\s\S]*?<\/activity>", data).group(0)
 
 print(activity)

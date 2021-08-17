@@ -41,28 +41,17 @@ class Activity:
         for label in labels:
             label.pack()
 
-# message = Activity(root)
-# message.display()
-
-# for key, value in message.contents.items():
-#     try:
-#         print(key + ": " + value)
-#     except TypeError:
-#         print("No value")
-
-divider = Label(text="-----------------------------------------------------------")
 
 for item in root.findall("activity"): #for every item named activity
     message = Activity(item) #create a new message object from that activity
     message.display(False) #display the message object using tkinter
-    
-    divider.pack()
+    print(message.contents["body"])
     
     for thing in item.findall("comments"):
 
         for i in thing.findall("comment"):
-            print(i.tag)
             comment = Activity(i)
             comment.display(True)
+            print(comment.contents["body"])
 
 WIN.mainloop()
