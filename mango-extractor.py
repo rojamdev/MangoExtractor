@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as etree
 
-tree = etree.parse("some activities.xml")
+tree = etree.parse("output")
 root = tree.getroot()
 
 class Activity:
@@ -10,6 +10,7 @@ class Activity:
         self.contents = {
             "id": None, 
             "body": None,
+            "project-id": "none",
             "author-email-address": None,
             "created-on": None,
             "updated-at": None
@@ -22,12 +23,24 @@ class Activity:
                     self.contents[key] = subelem.text #then set it to the respective variable
 
 
+file = open("messages.csv", "a+", encoding="utf8")
+
+
 for item in root.findall("activity"): #for every item named activity
     message = Activity(item) #create a new message object from that activity
-    print("MESSAGE: " + message.contents["body"])
+    message_text = "[MESSAGE]" + "," + message.contents["author-email-address"] + "," + message.contents["created-on"] + "," + message.contents["project-id"] + "," + message.contents["body"]
+    file.write(message_text)
+    file.write("\n")
     
     for thing in item.findall("comments"):
 
         for i in thing.findall("comment"):
             comment = Activity(i)
-            print("COMMENT: " + comment.contents["body"])
+            comment_text = "[COMMENT]" + "," + comment.contents["author-email-address"] + "," + comment.contents["created-on"] + "," + comment.contents["body"]
+            file.write(comment_text)
+            file.write("\n")
+
+    file.write("\n")
+
+
+file.close()
