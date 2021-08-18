@@ -8,7 +8,11 @@ activities = re.findall("<activity>[\s\S]*?<\/activity>", data)
 
 with open("output", "a+", encoding="utf8") as output_file:
 
+    output_file.write("<root>\n")
+
     for i in range(0, len(activities) - 1):
 
         output_file.write(activities[i])
         output_file.write("\n")
+
+    output_file.write("</root>")
