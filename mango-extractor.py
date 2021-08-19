@@ -27,23 +27,26 @@ def create_message_file(tree, filename):
 
     output_file = open(filename, "a+", encoding="utf8")
 
+
+def create_activities_array(tree):
+    
+    activities = []
+
     for item in tree.findall("activity"): #for every item named activity
         message = Activity(item) #create a new message object from that activity
-        message_text = "[MESSAGE]" + "," + message.contents["author-email-address"] + "," + message.contents["created-on"] + "," + message.contents["body"]
-        output_file.write(message_text)
-        output_file.write("\n")
+        message_contents = ["[MESSAGE]", message.contents["author-email-address"], message.contents["created-on"], message.contents["body"]]
         
+        activities.append(message_contents)
+
         for thing in item.findall("comments"):
 
             for i in thing.findall("comment"):
                 comment = Activity(i)
-                comment_text = "[COMMENT]" + "," + comment.contents["author-email-address"] + "," + comment.contents["created-on"] + "," + comment.contents["body"]
-                output_file.write(comment_text)
-                output_file.write("\n")
+                comment_contents = ["[COMMENT]", comment.contents["author-email-address"], comment.contents["created-on"], comment.contents["body"]]
 
-        output_file.write("\n")
+                activities.append(comment_contents)
 
-    output_file.close()
+    return activities
     
 
 def get_project_ids(tree):
@@ -60,4 +63,9 @@ def get_project_ids(tree):
 
 
 print(get_project_ids(root))
-create_message_file(root, "messages.csv")
+
+array = create_activities_array(root)
+
+for item in array:
+    print(item)
+    print()
