@@ -5,15 +5,15 @@ root = tree.getroot()
 
 class Activity:
     
-    def __init__(self, element):
+    def __init__(self, element, is_comment):
 
         self.contents = {
-            "id": None, 
-            "body": None,
-            "project-id": 0,
+            "id": None,
             "author-email-address": None,
+            "body": None,
             "created-on": None,
-            "updated-at": None
+            "updated-at": None,
+            "project-id": 0
         }
         
         for subelem in element: #for every element in the tree
@@ -22,29 +22,34 @@ class Activity:
                 if subelem.tag == key: #if the tag matches one of the tags in the self.tags list
                     self.contents[key] = subelem.text #then set it to the respective variable
 
+        if is_comment:
+            self.contents["is_comment"] = "true"
+        else:
+            self.contents["is_comment"] = "false"
 
-def create_message_file(tree, filename):
+
+def create_message_json(array, filename):
 
     output_file = open(filename, "a+", encoding="utf8")
 
+    for item in array:
+        output_file.write(str(item) + ",")
+        output_file.write("\n")
+        
 
 def create_activities_array(tree):
     
     activities = []
 
     for item in tree.findall("activity"): #for every item named activity
-        message = Activity(item) #create a new message object from that activity
-        message_contents = ["[MESSAGE]", message.contents["author-email-address"], message.contents["created-on"], message.contents["body"]]
-        
-        activities.append(message_contents)
+        message = Activity(item, False) #create a new message object from that activity
+        activities.append(message.contents)
 
         for thing in item.findall("comments"):
 
             for i in thing.findall("comment"):
-                comment = Activity(i)
-                comment_contents = ["[COMMENT]", comment.contents["author-email-address"], comment.contents["created-on"], comment.contents["body"]]
-
-                activities.append(comment_contents)
+                comment = Activity(i, True)
+                activities.append(comment.contents)
 
     return activities
     
@@ -54,7 +59,7 @@ def get_project_ids(tree):
     project_ids = []
 
     for item in tree.findall("activity"):
-        message = Activity(item)
+        message = Activity(item, False)
         
         if message.contents["project-id"] not in project_ids:
             project_ids.append(message.contents["project-id"])
@@ -62,10 +67,10 @@ def get_project_ids(tree):
     return project_ids
 
 
-print(get_project_ids(root))
-
 array = create_activities_array(root)
 
 for item in array:
     print(item)
     print()
+
+create_message_json(array, "messages.json")
