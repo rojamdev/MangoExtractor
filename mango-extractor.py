@@ -13,7 +13,6 @@ class Activity:
             "author-email-address": None,
             "body": None,
             "created-on": None,
-            "updated-at": None,
             "project-id": 0
         }
         
@@ -29,11 +28,6 @@ class Activity:
                     else:
                         self.contents[key] = subelem.text #then set it to the respective variable
 
-        if is_comment:
-            self.contents["is_comment"] = "true"
-        else:
-            self.contents["is_comment"] = "false"
-
 
 def create_message_json(array, filename):
 
@@ -47,13 +41,17 @@ def create_activities_array(tree):
 
     for item in tree.findall("activity"): #for every item named activity
         message = Activity(item, False) #create a new message object from that activity
-        activities.append(message.contents)
 
         for thing in item.findall("comments"):
+            comments = []
 
             for i in thing.findall("comment"):
                 comment = Activity(i, True)
-                activities.append(comment.contents)
+                comments.append(comment.contents)
+                #activities.append(comment.contents)
+
+        message.contents["comments"] = comments
+        activities.append(message.contents)    
 
     return activities
     
