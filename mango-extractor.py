@@ -22,7 +22,7 @@ class Activity:
                 
                 if subelem.tag == key: #if the tag matches one of the tags in the self.tags list
                     
-                    if subelem.text.isnumeric():
+                    if subelem.text.isnumeric() and subelem.tag != "body":
                         self.contents[key] = int(subelem.text)
                     
                     else:
@@ -72,3 +72,5 @@ def get_project_ids(tree):
 array = create_activities_array(root)
 
 create_message_json(array, "messages.json")
+
+print(get_project_ids(root))
