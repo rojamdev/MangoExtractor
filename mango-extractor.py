@@ -33,6 +33,7 @@ def create_message_json(array, filename):
 
     output_file = open(filename, "a+", encoding="utf8")
     json.dump(array, output_file, indent = 4)
+    output_file.close()
         
 
 def create_activities_array(tree):
@@ -69,8 +70,19 @@ def get_project_ids(tree):
     return project_ids
 
 
-array = create_activities_array(root)
+def create_ids_json(array, filename):
+    project_id_dict = {}
 
-create_message_json(array, "messages.json")
+    for i in range(0, len(array)-1):
+        project_id_dict["key" + str(i)] = array[i]
 
-print(get_project_ids(root))
+    output_file = open(filename, "a+", encoding="utf8")
+    json.dump(project_id_dict, output_file, indent = 4)
+    output_file.close()
+
+
+#message_array = create_activities_array(root)
+#create_message_json(message_array, "messages.json")
+
+project_id_array = get_project_ids(root)
+create_ids_json(project_id_array, "projectids.json")
