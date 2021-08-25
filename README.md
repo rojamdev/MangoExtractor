@@ -9,3 +9,5 @@ Two scripts to extract the messages from a large XML document, recieved by a com
 - Place the XML file named hub_network_data.xml into the folder
 - Run file-read.py
 - Run mango-extractor.py
+
+This should have created a messages.json and a projectids.json, which can then be used in MangoViewer.
