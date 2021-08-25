@@ -83,8 +83,8 @@ def create_ids_json(array, filename):
     output_file.close()
 
 
-# message_array = create_activities_array(root)
-# create_message_json(message_array, "messages.json")
+message_array = create_activities_array(root)
+create_message_json(message_array, "messages.json")
 
-# project_id_array = get_project_ids(root)
-# create_ids_json(project_id_array, "projectids.json")
+project_id_array = get_project_ids(root)
+create_ids_json(project_id_array, "projectids.json")
