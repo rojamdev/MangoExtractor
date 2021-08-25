@@ -4,8 +4,8 @@ import json
 tree = etree.parse("output")
 root = tree.getroot()
 
-class Activity:
-    
+class Activity: #Takes an activity xml element and creates a dictionary based off of it
+
     def __init__(self, element, is_comment):
 
         self.contents = {
@@ -21,23 +21,24 @@ class Activity:
             for key, value in self.contents.items(): #iterates list for the number of items in the self.tags list
                 
                 if subelem.tag == key: #if the tag matches one of the tags in the self.tags list
-                    
+                    #then set it to the respective variable
+
                     if subelem.text.isnumeric() and subelem.tag != "body":
-                        self.contents[key] = int(subelem.text)
-                    
-                    else:
-                        self.contents[key] = subelem.text #then set it to the respective variable
+                        #converts the element to an int data type if it's a number (unless it's the body element)
+                        self.contents[key] = int(subelem.text) 
+                    else: 
+                        self.contents[key] = subelem.text 
 
 
 def create_message_json(array, filename):
-
+    """Dumps the list of message objects into a JSON file."""
     output_file = open(filename, "a+", encoding="utf8")
     json.dump(array, output_file, indent = 4)
     output_file.close()
         
 
 def create_activities_array(tree):
-    
+    """Creates an array of activity or message/comment objects."""
     activities = []
 
     for item in tree.findall("activity"): #for every item named activity
@@ -84,5 +85,5 @@ def create_ids_json(array, filename):
 #message_array = create_activities_array(root)
 #create_message_json(message_array, "messages.json")
 
-project_id_array = get_project_ids(root)
-create_ids_json(project_id_array, "projectids.json")
+#project_id_array = get_project_ids(root)
+#create_ids_json(project_id_array, "projectids.json")
