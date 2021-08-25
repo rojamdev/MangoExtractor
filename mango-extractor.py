@@ -1,13 +1,14 @@
 import xml.etree.ElementTree as etree
 import json
 
-tree = etree.parse("output")
-root = tree.getroot()
+tree = etree.parse("output") #parses the xml created from the file reader script
+root = tree.getroot() #gets the most outward element in which all other elements are inside
 
-class Activity: #Takes an activity xml element and creates a dictionary based off of it
+
+class Activity:
 
     def __init__(self, element, is_comment):
-
+    """Takes an activity xml element and creates a dictionary based off of it."""
         self.contents = {
             "id": None,
             "author-email-address": None,
@@ -38,28 +39,27 @@ def create_message_json(array, filename):
         
 
 def create_activities_array(tree):
-    """Creates an array of activity or message/comment objects."""
-    activities = []
+    """Creates an array of activity (or message/comment) objects."""
+    activities = [] #creates an array to store all the message objects
 
-    for item in tree.findall("activity"): #for every item named activity
+    for item in tree.findall("activity"): #for every element named activity
         message = Activity(item, False) #create a new message object from that activity
 
-        for thing in item.findall("comments"):
-            comments = []
+        for comment_list in item.findall("comments"): #finds the comments element
+            comments = [] #creates an array to store the comment objects in belonging to the message
 
-            for i in thing.findall("comment"):
-                comment = Activity(i, True)
+            for i in comment_list.findall("comment"): #finds the individual comment elements inside <comments>
+                comment = Activity(i, True) 
                 comments.append(comment.contents)
-                #activities.append(comment.contents)
 
-        message.contents["comments"] = comments
-        activities.append(message.contents)    
+        message.contents["comments"] = comments #adds the comments as an item in the message object
+        activities.append(message.contents) #appends the whole message to the message objects list
 
     return activities
     
 
 def get_project_ids(tree):
-    
+    """Compiles a list of all the project-id elements in each message from the xml."""
     project_ids = []
 
     for item in tree.findall("activity"):
@@ -72,7 +72,8 @@ def get_project_ids(tree):
 
 
 def create_ids_json(array, filename):
-    project_id_dict = {}
+    """Creates a JSON file of all the project IDs against generic names that can be edited later."""
+    project_id_dict = {} 
 
     for i in range(0, len(array)-1):
         project_id_dict["key" + str(i)] = array[i]
@@ -82,8 +83,8 @@ def create_ids_json(array, filename):
     output_file.close()
 
 
-#message_array = create_activities_array(root)
-#create_message_json(message_array, "messages.json")
+# message_array = create_activities_array(root)
+# create_message_json(message_array, "messages.json")
 
-#project_id_array = get_project_ids(root)
-#create_ids_json(project_id_array, "projectids.json")
+# project_id_array = get_project_ids(root)
+# create_ids_json(project_id_array, "projectids.json")
