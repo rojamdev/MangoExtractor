@@ -54,7 +54,6 @@ def create_activities_array(tree):
             for i in thing.findall("comment"):
                 comment = Activity(i, True)
                 comments.append(comment.contents)
-                # activities.append(comment.contents)
 
         message.contents["comments"] = comments
         activities.append(message.contents)
