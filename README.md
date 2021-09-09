@@ -1,12 +1,12 @@
 # MangoExtractor
-Two scripts to extract the messages from a large XML document, recieved by a company from MangoApps after requesting their message history.
+Two scripts to extract the messages from a large XML document, recieved from MangoApps after a company requested their message history.
 
 ## Requirements
-- Python 3.9.5 or later
+- Python 3.9.5 or later (earlier versions not tested)
 
 ## Usage
 - Clone the repository, or download the two python files and place them in a folder
-- Place the XML file named hub_network_data.xml into the folder
+- Place the XML file from MangoApps into the folder
 - Run file-read.py
 - Run mango-extractor.py
 
