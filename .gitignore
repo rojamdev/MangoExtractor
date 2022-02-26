@@ -1,0 +1,3 @@
+*.xml
+*.json
+__pycache__
